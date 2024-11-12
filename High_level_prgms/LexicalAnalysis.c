@@ -3,18 +3,19 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-bool isKeyword(const char *lexeme){
-    const char *keywords[] = { "auto",     "break",    "case",     "char", 
-            "const",    "continue", "default",  "do", 
-            "double",   "else",     "enum",     "extern", 
-            "float",    "for",      "goto",     "if", 
-            "int",      "long",     "register", "return", 
-            "short",    "signed",   "sizeof",   "static", 
-            "struct",   "switch",   "typedef",  "union", 
-            "unsigned", "void",     "volatile", "while" };
-    int num_keywords = sizeof(keywords) / sizeof(keywords[0]);
+bool Keywords(const char *lexeme){
+    const char *keywords[] = { 
+        "const",    "continue", "default",  "do", 
+        "float",    "for",      "goto",     "if", 
+        "auto",     "break",    "case",     "char", 
+        "int",      "long",     "register", "return",    
+        "double",   "else",     "enum",     "extern",
+        "unsigned", "void",     "volatile", "while"   
+        "short",    "signed",   "sizeof",   "static", 
+        "struct",   "switch",   "typedef",  "union", 
+             };
 
-    for(int i = 0; i < num_keywords; i++){
+    for(int i = 0; i < sizeof(keywords) / sizeof(keywords[0]); i++){
         if(strcmp(lexeme, keywords[i]) == 0){
             return true;
         }
@@ -22,13 +23,13 @@ bool isKeyword(const char *lexeme){
     return false;
 }
 
-bool isIdentifier(const char *str) {
+bool Identifiers(const char *str) {
     if (!isalpha(str[0]) && str[0] != '_') {
         return false;
     }
 
     for (int i = 1; i < strlen(str); i++) {
-        if (!isdigit(str[i]) && str[i] != '_') {
+        if (!isalnum(str[i]) && str[i] != '_') {
             return false;
         }
     }
@@ -36,7 +37,7 @@ bool isIdentifier(const char *str) {
     return true;
 }
 
-bool isOperator(const char *str){
+bool Operators(const char *str){
     const char *operators[] = { "+", "-", "*", "/", "%", "==", "!=", "<=", ">=", "<", ">", "=", "+=", "-=", "*=", "/=", "%=", "&=","|=", "^=", "<<=", ">>=", "&", "|", "^", "~", "!","&&", "||", "++", "--", "++", "--"};
     int num_operators = sizeof(operators) / sizeof(operators[0]);
     for(int i = 0; i < num_operators; i++){
@@ -47,7 +48,7 @@ bool isOperator(const char *str){
     return false;
 }
 
-bool isDelimeter(const char *str){
+bool Delimeters(const char *str){
     const char *delimeters[] = {"(", ")", "{", "}", "[", "]",";", ",", ".", ":", " ", "\t", "\n"};
     int num_delimeters = sizeof(delimeters) / sizeof(delimeters[0]);
     for(int i = 0; i < num_delimeters; i++){
@@ -58,7 +59,17 @@ bool isDelimeter(const char *str){
     return false;
 }
 
-bool isNumeric(const char *str){
+bool StringLiterals(const char *str){
+    if(str[0] != '"' || str[strlen(str) - 1] != '"'){
+        return false;
+        }
+    if(strlen(str)<2){
+        return false;
+    }
+    return true;
+}
+
+bool Numbers(const char *str){
     for(int i =0; i<strlen(str); i++){
         if(!isdigit(str[i])){
             return false;
@@ -71,9 +82,9 @@ int main(){
     // printf("Enter the Lexeme:\n");
     // scanf("%s", lexeme);
 
-    // if(isKeyword(lexeme)){
+    // if(Keywords(lexeme)){
     //     printf("Keyword\n");
-    // } else if(isIdentifier(lexeme)) {
+    // } else if(Identifiers(lexeme)) {
     //     printf("Identifier\n");
     // }else{
     //     printf("Not a Keyword or Identifier\n");
@@ -95,17 +106,20 @@ int main(){
 
     while(fscanf(fp, "%s", lexeme) != EOF){
         printf("Lexeme: %s\n",lexeme);
-        if(isKeyword(lexeme)){
+        if(Keywords(lexeme)){
             printf("'%s' is a Keyword\n", lexeme);
-        } else if(isIdentifier(lexeme)) {
+        } else if(Identifiers(lexeme)) {
             printf("'%s' is an Identifier\n", lexeme);
-        } else if(isNumeric(lexeme)){
+        } else if(Numbers(lexeme)){
             printf("%s  is a Number\n",lexeme);
-        } else if(isOperator(lexeme)){
+        } else if(Operators(lexeme)){
             printf("%s is an Operator\n",lexeme);
-        } else if(isDelimeter(lexeme)){
+        } else if(Delimeters(lexeme)){
             printf("%s is a Delimeter\n",lexeme);
-        }else {
+        } else if(StringLiterals(lexeme)){
+            printf("%s is a String Literal\n",lexeme);
+        }
+        else {
             printf("'%s' is other\n", lexeme);
         }
     }

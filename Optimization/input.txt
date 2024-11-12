@@ -1,0 +1,5 @@
+t1 = a + b
+t2 = c + d
+t3 = e + f
+t4 = b + a
+return t1 + t3
