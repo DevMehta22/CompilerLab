@@ -1,5 +1,5 @@
-t1 = a + b
+t1 = m + n
 t2 = c + d
-t3 = e + f
-t4 = b + a
-return t1 + t3
+t3 = t2 + f
+t4 = b + t3
+return t4

@@ -1,3 +1,4 @@
-t1 = a + b
-t3 = e + f
-return t1 + t3
+t2 = c + d
+t3 = t2 + f
+t4 = b + t3
+return t4
